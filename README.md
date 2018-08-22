@@ -67,7 +67,7 @@ independent of those other problems.
 xiangqiboard.js is released under the terms of the [MIT License].
 
 [jQuery]:https://jquery.com/
-[xiangqiboardjs.com]:http://lengyanyu258.github.io/xiangqiboardjs
+[xiangqiboardjs.com]:http://lengyanyu258.github.io/xiangqiboardjs/index.html
 [xiangqi.js]:https://github.com/lengyanyu258/xiangqi.js
 [Example 5000]:http://lengyanyu258.github.io/xiangqiboardjs/examples#5000
 [MIT License]:LICENSE.md
