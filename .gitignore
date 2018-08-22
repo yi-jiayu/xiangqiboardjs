@@ -3,7 +3,3 @@
 
 .idea/
 node_modules/
-
-docs/*.html
-docs/css/chessboard.css
-docs/js/chessboard.js
