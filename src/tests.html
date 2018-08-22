@@ -4,17 +4,39 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>Chessboard Tests</title>
-  <link rel="stylesheet" href="chessboard.css" />
+  <link rel="stylesheet" href="xiangqiboard.css" />
 </head>
 <body>
-  <div id="myBoard" style="width: 400px"></div>
-  <div id="myBoard2" style="width: 400px"></div>
+<div style="width: 1290px;">
+    <div id="myBoard1" style="width: 25%;float: left;"></div>
+    <div id="myBoard2" style="width: 25%;float: left;"></div>
+    <div id="myBoard3" style="width: 25%;float: left;"></div>
+    <div id="myBoard4" style="width: 25%;float: left;"></div>
+</div>
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="chessboard.js"></script>
+  <script src="xiangqiboard.js"></script>
   <script>
-  var board = Chessboard('#myBoard', 'start')
-  // var board = Chessboard('#myBoard', 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R')
-  // var board = Chessboard('#myBoard', 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R')
+      const config = {
+          boardTheme: '../docs/img/xiangqiboards/wikimedia/xiangqiboard.svg',
+          pieceTheme: '../docs/img/xiangqipieces/wikimedia/{piece}.svg',
+          orientation: 'white',
+          position: 'start',
+          showNotation: true
+      }
+
+      Xiangqiboard('#myBoard1', config)
+
+      config.pieceTheme = '../docs/img/xiangqipieces/wikipedia/{piece}.svg'
+      config.position = 'r1bakab1r/9/1cn2cn2/p1p1p1p1p/9/9/P1P1P1P1P/1C2C1N2/9/RNBAKABR1'
+      Xiangqiboard('#myBoard2', config)
+
+      config.pieceTheme = '../docs/img/xiangqipieces/traditional/{piece}.png'
+      config.position = 'rnbakabnr/9/1c2c4/p1p1C1p1p/9/9/P1P1P1P1P/1C7/9/RNBAKABNR'
+      config.orientation = 'black'
+      Xiangqiboard('#myBoard3', config)
+
+      config.pieceTheme = '../docs/img/xiangqipieces/graphic/{piece}.png'
+      Xiangqiboard('#myBoard4', config)
   </script>
 </body>
 </html>

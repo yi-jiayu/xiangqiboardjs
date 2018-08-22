@@ -5,10 +5,10 @@
 
 <div class="hero-wrapper">
     <div class="body-width-115f6 hero-inner-556fe">
-        <img src="img/chesspieces/wikipedia/bK.png" alt="Black King" />
-        <h1>chessboard.js</h1>
-        <h3>The easiest way to embed a chess board on your site.</h3>
-        <a href="releases/0.3.0/chessboardjs-0.3.0.zip">Download v0.3.0</a>
+        <img src="img/logo.png" alt="Red King" />
+        <h1>xiangqiboard.js</h1>
+        <h3>The easiest way to embed a xiangqi/chinese chess board on your site.</h3>
+        {{{mostRecentVersion}}}
     </div>
 </div>
 
@@ -27,12 +27,12 @@
 <div class="col-11bcf">
     <h2>As easy as two lines.</h2>
     <h4>HTML</h4>
-    <pre class="prettyprint">&lt;div id="board1" style="width: 400px"&gt;&lt;/div&gt;</pre>
+    <pre class="prettyprint">&lt;div id="board1" style="width: 450px"&gt;&lt;/div&gt;</pre>
     <h4>JavaScript</h4>
-    <pre class="prettyprint">var board1 = Chessboard('board1', 'start')</pre>
+    <pre class="prettyprint">var board1 = Xiangqiboard('board1', 'start')</pre>
 </div>
 <div class="col-11bcf">
-    <div id="board1" style="width: 400px"></div>
+    <div id="board1" style="width: 450px"></div>
 </div>
 </section>
 
@@ -41,7 +41,7 @@
     <h2>Customize with a powerful API.</h2>
     <h4>HTML</h4>
 <pre class="prettyprint">
-&lt;div id="board2" style="width: 400px"&gt;&lt;/div&gt;
+&lt;div id="board2" style="width: 450px"&gt;&lt;/div&gt;
 &lt;button id="startBtn"&gt;Start Position&lt;/button&gt;
 &lt;button id="clearBtn"&gt;Clear Board&lt;/button&gt;
 </pre>
@@ -49,7 +49,7 @@
 <pre class="prettyprint">{{{example2}}}</pre>
 </div>
 <div class="col-11bcf">
-    <div id="board2" style="width: 400px"></div>
+    <div id="board2" style="width: 450px"></div>
     <button id="startBtn">Start Position</button>
     <button id="clearBtn">Clear Board</button>
 </div>
@@ -61,7 +61,7 @@
 
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/prettify.min.js"></script>
-<script src="js/chessboard.js"></script>
+<script src="js/xiangqiboard.js"></script>
 <script>
 ;(function () {
   function isTouchDevice () {
@@ -72,7 +72,7 @@
     prettyPrint()
 
     // example 1
-    var board1 = Chessboard('board1', 'start')
+    {{{example1}}}
 
     // example 2
     {{{example2}}}

@@ -8,22 +8,22 @@ Get Position
 Use the <a href="docs.html#methods:position"><code class="js plain">position</code></a> and <a href="docs.html#methods:fen"><code class="js plain">fen</code></a> methods to retrieve the current position of the board.
 
 ===== HTML
-<div id="myBoard" style="width: 400px"></div>
+<div id="myBoard" style="width: 450px"></div>
 <button id="showPositionBtn">Show position in console</button>
 
 ===== JS
-var config = {
+const config = {
   draggable: true,
   position: 'start'
-}
-var board = Chessboard('myBoard', config)
+};
+const board = Xiangqiboard('myBoard', config);
 
 function clickShowPositionBtn () {
-  console.log('Current position as an Object:')
-  console.log(board.position())
+  console.log('Current position as an Object:');
+  console.log(board.position());
 
-  console.log('Current position as a FEN string:')
-  console.log(board.fen())
+  console.log('Current position as a FEN string:');
+  console.log(board.fen());
 }
 
-$('#showPositionBtn').on('click', clickShowPositionBtn)
+$('#showPositionBtn').on('click', clickShowPositionBtn);

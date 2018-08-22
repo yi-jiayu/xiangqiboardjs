@@ -8,11 +8,11 @@ Orientation
 Use the <a href="docs.html#config:orientation"><code class="js plain">orientation</code></a> property to set board orientation.
 
 ===== HTML
-<div id="myBoard" style="width: 400px"></div>
+<div id="myBoard" style="width: 450px"></div>
 
 ===== JS
-var config = {
+const config = {
   orientation: 'black',
   position: 'start'
-}
-var board = Chessboard('myBoard', config)
+};
+const board = Xiangqiboard('myBoard', config);

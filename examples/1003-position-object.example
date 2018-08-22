@@ -8,12 +8,12 @@ Position Object
 Pass a <a href="docs.html#position_object">Position Object</a> as the second argument to initialize the board to a specific position.
 
 ===== HTML
-<div id="myBoard" style="width: 400px"></div>
+<div id="myBoard" style="width: 450px"></div>
 
 ===== JS
-var position = {
-  d6: 'bK',
-  d4: 'wP',
-  e4: 'wK'
-}
-var board = Chessboard('myBoard', position)
+const position = {
+  f9: 'bK',
+  e8: 'rP',
+  d1: 'rK'
+};
+const board = Xiangqiboard('myBoard', position);

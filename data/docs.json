@@ -162,11 +162,11 @@
 {
   "name":"orientation",
   "type":[
-    "<code class='js string'>'white'</code>",
+    "<code class='js string'>'red'</code>",
     "<code class='js string'>'black'</code>"
   ],
   "req":false,
-  "default":"<code class='js string'>'white'</code>",
+  "default":"<code class='js string'>'red'</code>",
   "desc":[
     "If provided, sets the initial orientation of the board."
   ],
@@ -177,7 +177,7 @@
   "name":"showNotation",
   "type":"Boolean",
   "req":false,
-  "default":"<code class='js keyword'>true</code>",
+  "default":"<code class='js keyword'>false</code>",
   "desc":[
     "Turn board notation on or off."
   ],
@@ -216,7 +216,7 @@
   "name":"pieceTheme",
   "type":["String","Function"],
   "req":false,
-  "default":"<code class='js string'>'img/chesspieces/<br />wikipedia/{piece}.png'</code>",
+  "default":"<code class='js string'>'img/xiangqipieces/<br />wikimedia/{piece}.svg'</code>",
   "desc":[
     "A template string used to determine the source of piece images.",
     "If <code class='js plain'>pieceTheme</code> is a function the first argument is the piece code.",
@@ -282,15 +282,6 @@
 },
 "------------------------------------------------------------------------------"
 ],
-
-
-
-
-
-
-
-
-
 
 
 "methods":[
@@ -382,10 +373,10 @@
   "noId":true,
   "name":"orientation(side)",
   "args":[
-    ["side", "<code class='js string'>'white'</code>, <code class='js string'>'black'</code>, or <code class='js string'>'flip'</code>"]
+    ["side", "<code class='js string'>'red'</code>, <code class='js string'>'black'</code>, or <code class='js string'>'flip'</code>"]
   ],
   "desc":[
-    "If <code class='js string'>'white'</code> or <code class='js string'>'black'</code>, sets the orientation of the board accordingly.",
+    "If <code class='js string'>'red'</code> or <code class='js string'>'black'</code>, sets the orientation of the board accordingly.",
     "If <code class='js string'>'flip'</code>, flips the orientation."
   ],
   "examples":[3005]
@@ -415,24 +406,16 @@
 ],
 
 
-
-
-
-
-
-
-
-
 "errors":[
 {
   "id":1001,
-  "desc":"The first argument to <code class='js plain'>Chessboard()</code> cannot be an empty string.",
-  "fix":"The first argument to the <code class='js plain'>Chessboard()</code> constructor should be the id of a DOM element or a reference to a single DOM element."
+  "desc":"The first argument to <code class='js plain'>Xiangqiboard()</code> cannot be an empty string.",
+  "fix":"The first argument to the <code class='js plain'>Xiangqiboard()</code> constructor should be the id of a DOM element or a reference to a single DOM element."
 },
 {
   "id":1003,
-  "desc":"The first argument to <code class='js plain'>Chessboard()</code> must be an ID or a single DOM node.",
-  "fix":"The first argument to the <code class='js plain'>Chessboard()</code> constructor should be the id of a DOM element or a reference to a single DOM element."
+  "desc":"The first argument to <code class='js plain'>Xiangqiboard()</code> must be an ID or a single DOM node.",
+  "fix":"The first argument to the <code class='js plain'>Xiangqiboard()</code> constructor should be the id of a DOM element or a reference to a single DOM element."
 },
 {
   "id":1005,
@@ -443,11 +426,6 @@
   "id":2826,
   "desc":"Invalid move passed to the move method.",
   "fix":"Moves must be a string in the form of <code class='js string'>'e2-e4'</code>, <code class='js string'>'b8-c6'</code>, etc."
-},
-{
-  "id":5482,
-  "desc":"Invalid value passed to the orientation method.",
-  "fix":"The first argument to the orientation method must be <code class='js string'>'white'</code>, <code class='js string'>'black'</code>, or <code class='js string'>'flip'</code>."
 },
 {
   "id":6482,
@@ -464,15 +442,9 @@
   "desc":"Unable to build image source for cfg.pieceTheme.",
   "fix":[
     "This is an internal Chessboard error that you should never see.",
-    "If you see this error please open a <a href='https://github.com/oakmac/chessboardjs/issues'>GitHub issue</a>."
+    "If you see this error please open a <a href='https://github.com/lengyanyu258/xiangqiboardjs/issues'>GitHub issue</a>."
   ]
 }
 ]
-
-
-
-
-
-
 
 }

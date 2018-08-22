@@ -8,23 +8,23 @@ onDrop
 The <a href="docs.html#config:onDrop"><code class="js plain">onDrop</code></a> event fires every time a piece is dropped.
 
 ===== HTML
-<div id="myBoard" style="width: 400px"></div>
+<div id="myBoard" style="width: 450px"></div>
 
 ===== JS
 function onDrop (source, target, piece, newPos, oldPos, orientation) {
-  console.log('Source: ' + source)
-  console.log('Target: ' + target)
-  console.log('Piece: ' + piece)
-  console.log('New position: ' + Chessboard.objToFen(newPos))
-  console.log('Old position: ' + Chessboard.objToFen(oldPos))
-  console.log('Orientation: ' + orientation)
-  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+  console.log('Source: ' + source);
+  console.log('Target: ' + target);
+  console.log('Piece: ' + piece);
+  console.log('New position: ' + Xiangqiboard.objToFen(newPos));
+  console.log('Old position: ' + Xiangqiboard.objToFen(oldPos));
+  console.log('Orientation: ' + orientation);
+  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 }
 
-var config = {
+const config = {
   draggable: true,
   position: 'start',
   onDrop: onDrop,
   sparePieces: true
-}
-var board = Chessboard('myBoard', config)
+};
+const board = Xiangqiboard('myBoard', config);

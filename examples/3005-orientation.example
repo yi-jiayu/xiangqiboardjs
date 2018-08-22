@@ -8,27 +8,27 @@ Orientation
 Use the <a href="docs.html#methods:orientation"><code class="js plain">orientation</code></a> method to retrieve and set the orientation. Use the <a href="docs.html#methods:flip"><code class="js plain">flip</code></a> method to flip orientation.
 
 ===== HTML
-<div id="myBoard" style="width: 400px"></div>
+<div id="myBoard" style="width: 450px"></div>
 <button id="showOrientationBtn">Show orientation in console</button>
 <button id="flipOrientationBtn">Flip orientation</button>
 <br />
-<button id="whiteOrientationBtn">White orientation</button>
+<button id="redOrientationBtn">Red orientation</button>
 <button id="blackOrientationBtn">Black orientation</button>
 
 ===== JS
-var ruyLopez = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
-var board = Chessboard('myBoard', ruyLopez)
+const B31 = 'r1bakab1r/9/1cn2cn2/p1p1p1p1p/9/9/P1P1P1P1P/1C2C1N2/9/RNBAKABR1';
+const board = Xiangqiboard('myBoard', B31);
 
 $('#showOrientationBtn').on('click', function () {
-  console.log('Board orientation is: ' + board.orientation())
-})
+  console.log('Board orientation is: ' + board.orientation());
+});
 
-$('#flipOrientationBtn').on('click', board.flip)
+$('#flipOrientationBtn').on('click', board.flip);
 
-$('#whiteOrientationBtn').on('click', function () {
-  board.orientation('white')
-})
+$('#redOrientationBtn').on('click', function () {
+  board.orientation('red');
+});
 
 $('#blackOrientationBtn').on('click', function () {
-  board.orientation('black')
-})
+  board.orientation('black');
+});

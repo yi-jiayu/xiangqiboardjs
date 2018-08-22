@@ -8,24 +8,24 @@ onDragMove
 The <a href="docs.html#config:onDragMove"><code class="js plain">onDragMove</code></a> event fires every time a piece changes location.
 
 ===== HTML
-<div id="myBoard" style="width: 400px"></div>
+<div id="myBoard" style="width: 450px"></div>
 
 ===== JS
 function onDragMove (newLocation, oldLocation, source,
                      piece, position, orientation) {
-  console.log('New location: ' + newLocation)
-  console.log('Old location: ' + oldLocation)
-  console.log('Source: ' + source)
-  console.log('Piece: ' + piece)
-  console.log('Position: ' + Chessboard.objToFen(position))
-  console.log('Orientation: ' + orientation)
-  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+  console.log('New location: ' + newLocation);
+  console.log('Old location: ' + oldLocation);
+  console.log('Source: ' + source);
+  console.log('Piece: ' + piece);
+  console.log('Position: ' + Xiangqiboard.objToFen(position));
+  console.log('Orientation: ' + orientation);
+  console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 }
 
-var config = {
+const config = {
   draggable: true,
   position: 'start',
   onDragMove: onDragMove,
   sparePieces: true
-}
-var board = Chessboard('myBoard', config)
+};
+const board = Xiangqiboard('myBoard', config);

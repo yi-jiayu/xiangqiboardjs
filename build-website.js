@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// This files builds the .html files in the website/ folder
+// This files builds the .html files in the docs/ folder
 // -----------------------------------------------------------------------------
 
 // libraries
@@ -7,21 +7,21 @@ const fs = require('fs')
 const kidif = require('kidif')
 const mustache = require('mustache')
 const docs = require('./data/docs.json')
+const releases = require('./data/releases.json')
 
 const encoding = {encoding: 'utf8'}
 
 // grab some mustache templates
-const docsTemplate = fs.readFileSync('templates/docs.mustache', encoding)
-const downloadTemplate = fs.readFileSync('templates/download.mustache', encoding)
-const examplesTemplate = fs.readFileSync('templates/examples.mustache', encoding)
-const homepageTemplate = fs.readFileSync('templates/homepage.mustache', encoding)
-const singleExampleTemplate = fs.readFileSync('templates/single-example.mustache', encoding)
 const headTemplate = fs.readFileSync('templates/_head.mustache', encoding)
 const headerTemplate = fs.readFileSync('templates/_header.mustache', encoding)
 const footerTemplate = fs.readFileSync('templates/_footer.mustache', encoding)
+const homepageTemplate = fs.readFileSync('templates/homepage.mustache', encoding)
+const examplesTemplate = fs.readFileSync('templates/examples.mustache', encoding)
+const docsTemplate = fs.readFileSync('templates/docs.mustache', encoding)
+const downloadTemplate = fs.readFileSync('templates/download.mustache', encoding)
 
-const latestChessboardJS = fs.readFileSync('src/chessboard.js', encoding)
-const latestChessboardCSS = fs.readFileSync('src/chessboard.css', encoding)
+const latestChessboardJS = fs.readFileSync('src/xiangqiboard.js', encoding)
+const latestChessboardCSS = fs.readFileSync('src/xiangqiboard.css', encoding)
 
 // grab the examples
 const examplesArr = kidif('examples/*.example')
@@ -53,10 +53,10 @@ const examplesGroups = [
   }
 ]
 
-const homepageExample1 = ''
+const homepageExample1 = 'var board1 = Xiangqiboard(\'board1\', \'start\')'
 
 const homepageExample2 = `
-var board2 = Chessboard('board2', {
+var board2 = Xiangqiboard('board2', {
   draggable: true,
   dropOffBoard: 'trash',
   sparePieces: true
@@ -66,19 +66,21 @@ $('#startBtn').on('click', board2.start)
 $('#clearBtn').on('click', board2.clear)`.trim()
 
 function writeSrcFiles () {
-  fs.writeFileSync('website/js/chessboard.js', latestChessboardJS, encoding)
-  fs.writeFileSync('website/css/chessboard.css', latestChessboardCSS, encoding)
+  fs.writeFileSync('docs/js/xiangqiboard.js', latestChessboardJS, encoding)
+  fs.writeFileSync('docs/css/xiangqiboard.css', latestChessboardCSS, encoding)
 }
 
 function writeHomepage () {
   const headHTML = mustache.render(headTemplate, {pageTitle: 'Homepage'})
 
   const html = mustache.render(homepageTemplate, {
-    footer: footerTemplate,
     head: headHTML,
+    mostRecentVersion: buildMostRecentVersionHTML('Home'),
+    footer: footerTemplate,
+    example1: homepageExample1,
     example2: homepageExample2
   })
-  fs.writeFileSync('website/index.html', html, encoding)
+  fs.writeFileSync('docs/index.html', html, encoding)
 }
 
 function writeExamplesPage () {
@@ -86,13 +88,13 @@ function writeExamplesPage () {
   const headerHTML = mustache.render(headerTemplate, {examplesActive: true})
 
   const html = mustache.render(examplesTemplate, {
-    examplesJavaScript: buildExamplesJS(),
-    footer: footerTemplate,
     head: headHTML,
     header: headerHTML,
-    nav: buildExamplesNavHTML()
+    footer: footerTemplate,
+    nav: buildExamplesNavHTML(),
+    examplesJavaScript: buildExamplesJS()
   })
-  fs.writeFileSync('website/examples.html', html, encoding)
+  fs.writeFileSync('docs/examples.html', html, encoding)
 }
 
 const configTableRowsHTML = docs.config.reduce(function (html, itm) {
@@ -115,26 +117,33 @@ function writeDocsPage () {
   const headerHTML = mustache.render(headerTemplate, {docsActive: true})
 
   const html = mustache.render(docsTemplate, {
-    configTableRows: configTableRowsHTML,
-    errorRows: errorRowsHTML,
-    footer: footerTemplate,
     head: headHTML,
     header: headerHTML,
-    methodTableRows: methodTableRowsHTML
+    configTableRows: configTableRowsHTML,
+    methodTableRows: methodTableRowsHTML,
+    errorRows: errorRowsHTML,
+    footer: footerTemplate
   })
-  fs.writeFileSync('website/docs.html', html, encoding)
+  fs.writeFileSync('docs/docs.html', html, encoding)
 }
+
+const downloadsRowsHTML = releases.reduce(function (html, itm) {
+  if (isString(itm)) return html
+  return html + buildDownloadsRowHTML(itm)
+}, '')
 
 function writeDownloadPage () {
   const headHTML = mustache.render(headTemplate, {pageTitle: 'Download'})
   const headerHTML = mustache.render(headerTemplate, {downloadActive: true})
 
   const html = mustache.render(downloadTemplate, {
-    footer: footerTemplate,
     head: headHTML,
-    header: headerHTML
+    header: headerHTML,
+    mostRecentVersion: buildMostRecentVersionHTML('Download'),
+    downloadsRows: downloadsRowsHTML,
+    footer: footerTemplate
   })
-  fs.writeFileSync('website/download.html', html, encoding)
+  fs.writeFileSync('docs/download.html', html, encoding)
 }
 
 function writeWebsite () {
@@ -162,29 +171,6 @@ function htmlEscape (str) {
            .replace(/`/g, '&#x60;')
 }
 
-function buildExampleGroupHTML (idx, groupName, examplesInGroup) {
-  const groupNum = idx + 1
-  let html = '<h4 id="groupHeader-' + groupNum + '">' + groupName + '</h4>' +
-    '<ul id="groupContainer-' + groupNum + '" style="display:none">'
-
-  examplesInGroup.forEach(function (exampleId) {
-    const example = examplesObj[exampleId]
-    html += '<li id="exampleLink-' + exampleId + '">' + example.name + '</id>'
-  })
-
-  html += '</ul>'
-
-  return html
-}
-
-function buildExamplesNavHTML () {
-  let html = ''
-  examplesGroups.forEach(function (group, idx) {
-    html += buildExampleGroupHTML(idx, group.name, group.examples)
-  })
-  return html
-}
-
 function buildExamplesJS () {
   let txt = 'window.CHESSBOARD_EXAMPLES = {}\n\n'
 
@@ -201,6 +187,29 @@ function buildExamplesJS () {
   return txt
 }
 
+function buildExamplesNavHTML () {
+  let html = ''
+  examplesGroups.forEach(function (group, idx) {
+    html += buildExampleGroupHTML(idx, group.name, group.examples)
+  })
+  return html
+}
+
+function buildExampleGroupHTML (idx, groupName, examplesInGroup) {
+  const groupNum = idx + 1
+  let html = '<h4 id="groupHeader-' + groupNum + '">' + groupName + '</h4>' +
+    '<ul id="groupContainer-' + groupNum + '" style="display:none">'
+
+  examplesInGroup.forEach(function (exampleId) {
+    const example = examplesObj[exampleId]
+    html += '<li id="exampleLink-' + exampleId + '">' + example.name + '</id>'
+  })
+
+  html += '</ul>'
+
+  return html
+}
+
 function buildConfigDocsTableRowHTML (propType, prop) {
   let html = ''
 
@@ -209,6 +218,9 @@ function buildConfigDocsTableRowHTML (propType, prop) {
 
   // property and type
   html += '<td>' + buildPropertyAndTypeHTML(propType, prop.name, prop.type) + '</td>'
+
+  // Required
+  html += '<td class="center">' + buildRequiredHTML(prop.req) + '</td>'
 
   // default
   html += '<td class="center"><p>' + buildDefaultHTML(prop.default) + '</p></td>'
@@ -225,7 +237,7 @@ function buildConfigDocsTableRowHTML (propType, prop) {
 }
 
 function buildMethodRowHTML (method) {
-  const nameNoParens = method.name.replace(/\(.+$/, '')
+  const nameNoParents = method.name.replace(/\(.+$/, '')
 
   let html = ''
 
@@ -233,11 +245,11 @@ function buildMethodRowHTML (method) {
   if (method.noId) {
     html += '<tr>'
   } else {
-    html += '<tr id="methods:' + nameNoParens + '">'
+    html += '<tr id="methods:' + nameNoParents + '">'
   }
 
   // name
-  html += '<td><p><a href="docs.html#methods:' + nameNoParens + '">' +
+  html += '<td><p><a href="docs.html#methods:' + nameNoParents + '">' +
     '<code class="js plain">' + method.name + '</code></a></p></td>'
 
   // args
@@ -258,70 +270,6 @@ function buildMethodRowHTML (method) {
   html += '<td>' + buildExamplesCellHTML(method.examples) + '</td>'
 
   html += '</tr>'
-
-  return html
-}
-
-function buildPropertyAndTypeHTML (section, name, type) {
-  let html = '<p><a href="docs.html#' + section + ':' + name + '">' +
-    '<code class="js plain">' + name + '</code></a></p>' +
-    '<p class=property-type-7ae66>' + buildTypeHTML(type) + '</p>'
-  return html
-}
-
-function buildTypeHTML (type) {
-  if (!Array.isArray(type)) {
-    type = [type]
-  }
-
-  let html = ''
-  for (var i = 0; i < type.length; i++) {
-    if (i !== 0) {
-      html += ' <small>or</small><br />'
-    }
-    html += type[i]
-  }
-
-  return html
-}
-
-function buildRequiredHTML (req) {
-  if (!req) return 'no'
-  if (req === true) return 'yes'
-  return req
-}
-
-function buildDescriptionHTML (desc) {
-  if (!Array.isArray(desc)) {
-    desc = [desc]
-  }
-
-  let html = ''
-  desc.forEach(function (d) {
-    html += '<p>' + d + '</p>'
-  })
-
-  return html
-}
-
-function buildDefaultHTML (defaultValue) {
-  if (!defaultValue) {
-    return '<small>n/a</small>'
-  }
-  return defaultValue
-}
-
-function buildExamplesCellHTML (examplesIds) {
-  if (!Array.isArray(examplesIds)) {
-    examplesIds = [examplesIds]
-  }
-
-  let html = ''
-  examplesIds.forEach(function (exampleId) {
-    var example = examplesObj[exampleId]
-    if (!example) return
-    html += '<p><a href="examples.html#' + exampleId + '">' + example.name + '</a></p>'
-  })
 
   return html
 }
@@ -355,6 +303,126 @@ function buildErrorRowHTML (error) {
   }
 
   html += '</tr>'
+
+  return html
+}
+
+function buildPropertyAndTypeHTML (section, name, type) {
+  return '<p><a href="docs.html#' + section + ':' + name + '">' +
+    '<code class="js plain">' + name + '</code></a></p>' +
+    '<p class=property-type-7ae66>' + buildTypeHTML(type) + '</p>'
+}
+
+function buildTypeHTML (type) {
+  if (!Array.isArray(type)) {
+    type = [type]
+  }
+
+  let html = ''
+  for (let i = 0; i < type.length; i++) {
+    if (i !== 0) {
+      html += ' <small>or</small><br />'
+    }
+    html += type[i]
+  }
+
+  return html
+}
+
+function buildRequiredHTML (req) {
+  if (!req) return 'no'
+  if (req === true) return 'yes'
+  return req
+}
+
+function buildDefaultHTML (defaultValue) {
+  if (!defaultValue) {
+    return '<small>n/a</small>'
+  }
+  return defaultValue
+}
+
+function buildDescriptionHTML (desc) {
+  if (!Array.isArray(desc)) {
+    desc = [desc]
+  }
+
+  let html = ''
+  desc.forEach(function (d) {
+    html += '<p>' + d + '</p>'
+  })
+
+  return html
+}
+
+function buildExamplesCellHTML (examplesIds) {
+  if (!Array.isArray(examplesIds)) {
+    examplesIds = [examplesIds]
+  }
+
+  let html = ''
+  examplesIds.forEach(function (exampleId) {
+    const example = examplesObj[exampleId]
+    if (!example) return
+    html += '<p><a href="examples.html#' + exampleId + '">' + example.name + '</a></p>'
+  })
+
+  return html
+}
+
+function buildMostRecentVersionHTML (page) {
+  let html = ''
+
+  for (const i in releases) {
+    if (!releases.hasOwnProperty(i) || isString(releases[i]) || releases[i].released === false) continue
+    let name = releases[i].files[0].name
+    let version = releases[i].version
+    switch (page) {
+      case 'Home':
+        html += '<a href="releases/' + version + '/' + name + '">Download v' + version + '</a>'
+        break
+      case 'Download':
+        html += '<div class="section">'
+        html += '<h1>Downloads</h1>'
+        html += '<a class="button large radius" href="releases/' + version + '/' + name + '" style="line-height: 22px">'
+        html += 'Download Most Recent Version<br />'
+        html += '<small style="font-weight: normal; font-size: 12px">v' + version + '</small>'
+        html += '</a>'
+        html += '</div>'
+        break
+      default:
+        break
+    }
+    break
+  }
+
+  return html
+}
+
+function buildDownloadsRowHTML (release) {
+  if (release.released === false) return ''
+
+  let html = '<div class="section release">'
+
+  // version and date
+  html += '<h4>v' + release.version + ' <small>released on ' + release.date + '</small></h4>'
+
+  // files
+  html += '<ul>'
+  release.files.forEach(function (file) {
+    html += `<li><a href="releases/${release.version}/${file.name}">${file.name}</a> <small>${file.size}</small></li>`
+  })
+  html += '</ul>'
+
+  // changes
+  html += '<h6>Changes:</h6>'
+  html += '<ul class="disc">'
+  release.changes.forEach(function (change) {
+    html += '<li>' + change + '</li>'
+  })
+  html += '</ul>'
+
+  html += '</div>'
 
   return html
 }

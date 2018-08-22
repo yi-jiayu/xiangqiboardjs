@@ -8,11 +8,11 @@ Notation
 Use the <a href="docs.html#config:showNotation"><code class="js plain">showNotation</code></a> property to turn board notation on or off.
 
 ===== HTML
-<div id="myBoard" style="width: 400px"></div>
+<div id="myBoard" style="width: 450px"></div>
 
 ===== JS
-var config = {
-  showNotation: false,
+const config = {
+  showNotation: true,
   position: 'start'
-}
-var board = Chessboard('myBoard', config)
+};
+const board = Xiangqiboard('myBoard', config);

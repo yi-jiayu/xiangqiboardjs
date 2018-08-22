@@ -13,17 +13,10 @@ You can have multiple boards on the same page.
 <div id="board3" class="small-board"></div>
 
 ===== JS
-var board1 = Chessboard('board1', {
-  position: 'start',
-  showNotation: false
-})
+const board1 = Xiangqiboard('board1', 'start');
 
-var board2 = Chessboard('board2', {
-  position: 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R',
-  showNotation: false
-})
+const B31 = 'r1bakab1r/9/1cn2cn2/p1p1p1p1p/9/9/P1P1P1P1P/1C2C1N2/9/RNBAKABR1';
+const board2 = Xiangqiboard('board2', B31);
 
-var board3 = Chessboard('board3', {
-  position: 'r1k4r/p2nb1p1/2b4p/1p1n1p2/2PP4/3Q1NB1/1P3PPP/R5K1',
-  showNotation: false
-})
+const C0 = 'r1bakab1r/9/1cn3nc1/p1p1p1p1p/9/9/P1P1P1P1P/1C2C1N2/9/RNBAKAB1R';
+const board3 = Xiangqiboard('board3', C0);

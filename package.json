@@ -1,17 +1,18 @@
 {
-  "author": "Chris Oakman <chris@oakmac.com> (http://chrisoakman.com/)",
-  "name": "oakmac-chessboard",
-  "description": "JavaScript chessboard widget",
-  "version": "1.0.0",
+  "name": "xiangqiboard",
+  "author": "@lengyanyu258 <lengyanyu258@outlook.com>",
+  "description": "JavaScript xiangqiboard widget",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/oakmac/chessboardjs.git"
+    "url": "git://github.com/lengyanyu258/xiangqiboardjs.git"
   },
-  "main": "src/chessboard.js",
+  "main": "src/xiangqiboard.js",
   "dependencies": {
     "jquery": ">=1.8.3"
   },
   "devDependencies": {
+    "gulp": "^3.9.1",
     "kidif": "1.1.0",
     "mustache": "2.3.0",
     "standard": "10.0.2"
