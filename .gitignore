@@ -4,7 +4,5 @@
 .idea/
 node_modules/
 
-docs/releases/**/css
-docs/releases/**/img
-docs/releases/**/js
-docs/releases/**/*.md
+docs/releases/
+!docs/releases/**/*.zip

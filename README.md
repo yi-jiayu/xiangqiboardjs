@@ -18,7 +18,7 @@ Here's a non-exhaustive list of things you can do with xiangqiboard.js:
   move.
 - Integrate xiangqiboard.js and [xiangqi.js] with a PGN database and allow people to
   search and playback games (see [Example 5000])
-- Build a chess server and have users play their games out using the
+- Build a xiangqi server and have users play their games out using the
   xiangqiboard.js board.
 
 xiangqiboard.js is flexible enough to handle any of these situations with relative
@@ -27,12 +27,10 @@ ease.
 ## What can xiangqiboard.js **not** do?
 
 The scope of xiangqiboard.js is limited to "just a board." This is intentional and
-makes xiangqiboard.js flexible for handling a multitude of chess-related problems.
-
-This is a common source of confusion for new users. [remove?]
+makes xiangqiboard.js flexible for handling a multitude of xiangqi-related problems.
 
 Specifically, xiangqiboard.js does not understand anything about how the game of
-chess is played: how a knight moves, who's turn is it, is White in check?, etc.
+xiangqi is played: how a knight moves, who's turn is it, is White in check?, etc.
 
 Fortunately, the powerful [xiangqi.js] library deals with exactly this sort of
 problem domain and plays nicely with xiangqiboard.js's flexible API. Some examples
@@ -49,7 +47,7 @@ This logic is distinct from the logic of the board. Please see the powerful
 
 Here is a list of things that xiangqiboard.js is **not**:
 
-- A chess engine
+- A xiangqi engine
 - A legal move validator
 - A PGN parser
 
@@ -59,15 +57,15 @@ independent of those other problems.
 
 ## Docs and Examples
 
-- Docs - <http://lengyanyu258.github.io/xiangqiboardjs/docs>
-- Examples - <http://lengyanyu258.github.io/xiangqiboardjs/examples>
+- Docs - <https://lengyanyu258.github.io/xiangqiboardjs/docs>
+- Examples - <https://lengyanyu258.github.io/xiangqiboardjs/examples>
 
 ## License
 
 xiangqiboard.js is released under the terms of the [MIT License].
 
 [jQuery]:https://jquery.com/
-[xiangqiboardjs.com]:http://lengyanyu258.github.io/xiangqiboardjs/index.html
+[xiangqiboardjs.com]:https://lengyanyu258.github.io/xiangqiboardjs/index.html
 [xiangqi.js]:https://github.com/lengyanyu258/xiangqi.js
-[Example 5000]:http://lengyanyu258.github.io/xiangqiboardjs/examples#5000
+[Example 5000]:https://lengyanyu258.github.io/xiangqiboardjs/examples#5000
 [MIT License]:LICENSE.md
