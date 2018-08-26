@@ -12,13 +12,11 @@
     "jquery": ">=1.8.3"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
     "kidif": "1.1.0",
     "mustache": "2.3.0",
-    "standard": "10.0.2"
-  },
-  "scripts": {
-    "test": "mocha"
+    "standard": "10.0.2",
+    "uglify-js": "3.4.8",
+    "clean-css": "4.2.1"
   },
   "license": "MIT"
 }

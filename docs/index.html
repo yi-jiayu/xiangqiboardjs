@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
     <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Roboto+Mono">-->
     <link rel="stylesheet" href="css/website.css" />
-    <link rel="stylesheet" href="css/xiangqiboard.css" />
+    <link rel="stylesheet" href="css/xiangqiboard.min.css" />
 </head>
 
 <body class="homepage">
@@ -86,21 +86,21 @@ $('#clearBtn').on('click', board2.clear)</pre>
 
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/prettify.min.js"></script>
-<script src="js/xiangqiboard.js"></script>
+<script src="js/xiangqiboard.min.js"></script>
 <script>
-;(function () {
-  function isTouchDevice () {
-    return ('ontouchstart' in document.documentElement)
-  }
+    (function () {
+        function isTouchDevice () {
+            return ('ontouchstart' in document.documentElement)
+        }
 
-  function init () {
-    prettyPrint()
+        function init () {
+            prettyPrint()
 
-    // example 1
-    var board1 = Xiangqiboard('board1', 'start')
+            // example 1
+            var board1 = Xiangqiboard('board1', 'start')
 
-    // example 2
-    var board2 = Xiangqiboard('board2', {
+            // example 2
+            var board2 = Xiangqiboard('board2', {
   draggable: true,
   dropOffBoard: 'trash',
   sparePieces: true
@@ -109,17 +109,17 @@ $('#clearBtn').on('click', board2.clear)</pre>
 $('#startBtn').on('click', board2.start)
 $('#clearBtn').on('click', board2.clear)
 
-    // prevent "browser drag" of the black king
-    $('.hero-inner-556fe img').on('mousedown', function (evt) { evt.preventDefault() })
+            // prevent "browser drag" of the black king
+            $('.hero-inner-556fe img').on('mousedown', function (evt) { evt.preventDefault() })
 
-    // prevent hover problems on touch devices
-    if (isTouchDevice()) {
-      $('.navbar-a57cc').removeClass('hover-effect')
-    }
-  }
+            // prevent hover problems on touch devices
+            if (isTouchDevice()) {
+                $('.navbar-a57cc').removeClass('hover-effect')
+            }
+        }
 
-  $(document).ready(init)
-})()
+        $(document).ready(init)
+    })()
 </script>
 </body>
 </html>

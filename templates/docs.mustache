@@ -96,40 +96,40 @@
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/jquery.color-2.1.2.min.js"></script>
 <script>
-;(function () {
-  function flashRow (id) {
-    var $el = $(document.getElementById(id))
-    var bgColor = $el.css('background-color')
-    $el.css('background-color', '#ffff99')
-      .animate({backgroundColor: bgColor}, 2000)
-  }
+    (function () {
+        function flashRow (id) {
+            var $el = $(document.getElementById(id))
+            var bgColor = $el.css('background-color')
+            $el.css('background-color', '#ffff99')
+                .animate({backgroundColor: bgColor}, 2000)
+        }
 
-  function isTableRow (id) {
-    return id.search(/\:/) !== -1
-  }
+        function isTableRow (id) {
+            return id.search(/\:/) !== -1
+        }
 
-  function clickAnchor (evt) {
-    var id = $(this).attr('href').replace(/^.+#/, '')
-    if (isTableRow(id)) {
-      flashRow(id)
-    }
-  }
+        function clickAnchor (evt) {
+            var id = $(this).attr('href').replace(/^.+#/, '')
+            if (isTableRow(id)) {
+                flashRow(id)
+            }
+        }
 
-  function init () {
-    $('body').on('click', 'a', clickAnchor)
+        function init () {
+            $('body').on('click', 'a', clickAnchor)
 
-    window.location.hash = window.location.hash.replace('%3a', ':')
+            window.location.hash = window.location.hash.replace('%3a', ':')
 
-    // give it just a smidge more time to load
-    setTimeout(function () {
-      if (isTableRow(window.location.hash)) {
-        flashRow(window.location.hash.replace('#', ''))
-      }
-    }, 150)
-  }
+            // give it just a smidge more time to load
+            setTimeout(function () {
+                if (isTableRow(window.location.hash)) {
+                    flashRow(window.location.hash.replace('#', ''))
+                }
+            }, 150)
+        }
 
-  $(document).ready(init)
-})()
+        $(document).ready(init)
+    })()
 </script>
 </body>
 </html>

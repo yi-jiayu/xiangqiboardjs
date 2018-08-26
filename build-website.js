@@ -8,6 +8,8 @@ const kidif = require('kidif')
 const mustache = require('mustache')
 const docs = require('./data/docs.json')
 const releases = require('./data/releases.json')
+const CleanCSS = require('clean-css')
+const process = require('child_process')
 
 const encoding = {encoding: 'utf8'}
 
@@ -25,7 +27,7 @@ const latestChessboardCSS = fs.readFileSync('src/xiangqiboard.css', encoding)
 
 // grab the examples
 const examplesArr = kidif('examples/*.example')
-const examplesObj = examplesArr.reduce(function (examplesObj, example, idx) {
+const examplesObj = examplesArr.reduce(function (examplesObj, example) {
   examplesObj[example.id] = example
   return examplesObj
 }, {})
@@ -65,9 +67,55 @@ var board2 = Xiangqiboard('board2', {
 $('#startBtn').on('click', board2.start)
 $('#clearBtn').on('click', board2.clear)`.trim()
 
+function getMostRecentVersion () {
+  for (const i in releases) {
+    if (!releases.hasOwnProperty(i) || isString(releases[i]) || releases[i].released === false) continue
+    return releases[i]
+  }
+}
+
+const RELEASE = getMostRecentVersion()
+const VERSION = RELEASE.version
+const DATE = RELEASE.date
+
+function renderJS (js) {
+  return (js + '')
+    .replace(/@VERSION/g, VERSION)
+    // remove RUN_ASSERTS
+    .replace(/\s*console.assert.+/g, '')
+    .replace(/\s*if\W+RUN_ASSERTS[^}]+}/g, '')  // if (RUN_ASSERTS) {}
+    .replace(/\s*\w*\W*RUN_ASSERTS.+/g, '') // const RUN_ASSERTS = true
+    // required by uglifyJS
+    .replace(/(const|let) /g, 'var ')
+}
+
+function renderCSS (css) {
+  return (css + '')
+    .replace(/\$version\$/g, VERSION)
+    .replace(/\$date\$/g, DATE)
+}
+
 function writeSrcFiles () {
-  fs.writeFileSync('docs/js/xiangqiboard.js', latestChessboardJS, encoding)
-  fs.writeFileSync('docs/css/xiangqiboard.css', latestChessboardCSS, encoding)
+  const releasePath = './docs/releases/' + VERSION
+  const jsReleasePath = releasePath + '/js/xiangqiboard-' + VERSION + '.js'
+  const jsReleaseMinPath = jsReleasePath.replace(/js$/g, 'min.js')
+  const cssReleasePath = releasePath + '/css/xiangqiboard-' + VERSION + '.css'
+  const cssReleaseMinPath = cssReleasePath.replace(/css$/g, 'min.css')
+
+  const uglifyjsPath = './node_modules/uglify-js/bin/uglifyjs'
+  const uglifyjsArgs = [jsReleasePath, '-c', '-m', '--comments', '-o', jsReleaseMinPath]
+  const cssInput = renderCSS(latestChessboardCSS)
+  const cssOutput = new CleanCSS().minify(cssInput)
+
+  // .js, .css
+  fs.writeFileSync(jsReleasePath, renderJS(latestChessboardJS), encoding)
+  fs.writeFileSync(cssReleasePath, cssInput, encoding)
+  // .min.js, .min.css
+  process.exec(uglifyjsPath + ' ' + (uglifyjsArgs + '').replace(/,/g, ' '))
+  fs.writeFileSync(cssReleaseMinPath, cssOutput.styles, encoding)
+  // sync to website
+  fs.writeFileSync('docs/js/xiangqiboard.min.js', fs.readFileSync(jsReleaseMinPath, encoding), encoding)
+  fs.writeFileSync('docs/css/xiangqiboard.min.css', fs.readFileSync(cssReleaseMinPath, encoding), encoding)
 }
 
 function writeHomepage () {
@@ -159,17 +207,6 @@ writeWebsite()
 // -----------------------------------------------------------------------------
 // HTML
 // -----------------------------------------------------------------------------
-
-function htmlEscape (str) {
-  return (str + '')
-           .replace(/&/g, '&amp;')
-           .replace(/</g, '&lt;')
-           .replace(/>/g, '&gt;')
-           .replace(/"/g, '&quot;')
-           .replace(/'/g, '&#39;')
-           .replace(/\//g, '&#x2F;')
-           .replace(/`/g, '&#x60;')
-}
 
 function buildExamplesJS () {
   let txt = 'window.CHESSBOARD_EXAMPLES = {}\n\n'
@@ -373,27 +410,23 @@ function buildExamplesCellHTML (examplesIds) {
 function buildMostRecentVersionHTML (page) {
   let html = ''
 
-  for (const i in releases) {
-    if (!releases.hasOwnProperty(i) || isString(releases[i]) || releases[i].released === false) continue
-    let name = releases[i].files[0].name
-    let version = releases[i].version
-    switch (page) {
-      case 'Home':
-        html += '<a href="releases/' + version + '/' + name + '">Download v' + version + '</a>'
-        break
-      case 'Download':
-        html += '<div class="section">'
-        html += '<h1>Downloads</h1>'
-        html += '<a class="button large radius" href="releases/' + version + '/' + name + '" style="line-height: 22px">'
-        html += 'Download Most Recent Version<br />'
-        html += '<small style="font-weight: normal; font-size: 12px">v' + version + '</small>'
-        html += '</a>'
-        html += '</div>'
-        break
-      default:
-        break
-    }
-    break
+  const name = RELEASE.files[0].name
+
+  switch (page) {
+    case 'Home':
+      html += '<a href="releases/' + VERSION + '/' + name + '">Download v' + VERSION + '</a>'
+      break
+    case 'Download':
+      html += '<div class="section">'
+      html += '<h1>Downloads</h1>'
+      html += '<a class="button large radius" href="releases/' + VERSION + '/' + name + '" style="line-height: 22px">'
+      html += 'Download Most Recent Version<br />'
+      html += '<small style="font-weight: normal; font-size: 12px">v' + VERSION + '</small>'
+      html += '</a>'
+      html += '</div>'
+      break
+    default:
+      break
   }
 
   return html
