@@ -39,23 +39,24 @@
   // use unique class names to prevent clashing with anything else on the page
   // and simplify selectors
   // NOTE: these should never change
-  const CSS = {}
-  CSS['clearfix'] = 'clearfix-7da63'
-  CSS['board'] = 'board-b72b1'
-  CSS['square'] = 'square-55d63'
-  CSS['red'] = 'red-1e1d7'
-  CSS['black'] = 'black-3c85d'
-  CSS['highlight1'] = 'highlight1-32417'
-  CSS['highlight2'] = 'highlight2-9c5d2'
-  CSS['notation'] = 'notation-322f9'
-  CSS['alpha'] = 'alpha-d2270'
-  CSS['numeric'] = 'numeric-fc462'
-  CSS['row'] = 'row-5277c'
-  CSS['piece'] = 'piece-417db'
-  CSS['sparePieces'] = 'spare-pieces-7492f'
-  CSS['xiangqiboard'] = 'xiangqiboard-63f37'
-  CSS['sparePiecesTop'] = 'spare-pieces-top-4028b'
-  CSS['sparePiecesBottom'] = 'spare-pieces-bottom-ae20f'
+  const CSS = Object.freeze({
+    clearfix: 'clearfix-7da63',
+    board: 'board-b72b1',
+    square: 'square-55d63',
+    red: 'red-1e1d7',
+    black: 'black-3c85d',
+    highlight1: 'highlight1-32417',
+    highlight2: 'highlight2-9c5d2',
+    notation: 'notation-322f9',
+    alpha: 'alpha-d2270',
+    numeric: 'numeric-fc462',
+    row: 'row-5277c',
+    piece: 'piece-417db',
+    sparePieces: 'spare-pieces-7492f',
+    xiangqiboard: 'xiangqiboard-63f37',
+    sparePiecesTop: 'spare-pieces-top-4028b',
+    sparePiecesBottom: 'spare-pieces-bottom-ae20f'
+  })
 
   // ---------------------------------------------------------------------------
   // Misc Util Functions
