@@ -6,10 +6,10 @@
 const fs = require('fs')
 const kidif = require('kidif')
 const mustache = require('mustache')
+const UglifyJS = require('uglify-js')
+const CleanCSS = require('clean-css')
 const docs = require('./data/docs.json')
 const releases = require('./data/releases.json')
-const CleanCSS = require('clean-css')
-const process = require('child_process')
 
 const encoding = {encoding: 'utf8'}
 
@@ -102,16 +102,22 @@ function writeSrcFiles () {
   const cssReleasePath = releasePath + '/css/xiangqiboard-' + VERSION + '.css'
   const cssReleaseMinPath = cssReleasePath.replace(/css$/g, 'min.css')
 
-  const uglifyjsPath = './node_modules/uglify-js/bin/uglifyjs'
-  const uglifyjsArgs = [jsReleasePath, '-c', '-m', '--comments', '-o', jsReleaseMinPath]
+  const jsOptions = {
+    output: {
+      comments: 'some'
+    },
+    toplevel: true
+  }
+  const jsInput = renderJS(latestChessboardJS)
+  const jsOutput = UglifyJS.minify(jsInput, jsOptions)
   const cssInput = renderCSS(latestChessboardCSS)
   const cssOutput = new CleanCSS().minify(cssInput)
 
   // .js, .css
-  fs.writeFileSync(jsReleasePath, renderJS(latestChessboardJS), encoding)
+  fs.writeFileSync(jsReleasePath, jsInput, encoding)
   fs.writeFileSync(cssReleasePath, cssInput, encoding)
   // .min.js, .min.css
-  process.exec(uglifyjsPath + ' ' + (uglifyjsArgs + '').replace(/,/g, ' '))
+  fs.writeFileSync(jsReleaseMinPath, jsOutput.code, encoding)
   fs.writeFileSync(cssReleaseMinPath, cssOutput.styles, encoding)
   // sync to website
   fs.writeFileSync('docs/js/xiangqiboard.min.js', fs.readFileSync(jsReleaseMinPath, encoding), encoding)
