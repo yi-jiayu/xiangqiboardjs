@@ -14,11 +14,11 @@ Piece Theme Function
 function pieceTheme (piece) {
   // graphic theme for red pieces
   if (piece.search(/r/) !== -1) {
-    return 'img/xiangqipieces/graphic/' + piece + '.png';
+    return 'img/xiangqipieces/graphic/' + piece + '.svg';
   }
 
   // traditional theme for black pieces
-  return 'img/xiangqipieces/traditional/' + piece + '.png';
+  return 'img/xiangqipieces/traditional/' + piece + '.svg';
 }
 
 const config = {

@@ -67,14 +67,12 @@ var board2 = Xiangqiboard('board2', {
 $('#startBtn').on('click', board2.start)
 $('#clearBtn').on('click', board2.clear)`.trim()
 
-function getMostRecentVersion () {
+const RELEASE = (function () {
   for (const i in releases) {
     if (!releases.hasOwnProperty(i) || isString(releases[i]) || releases[i].released === false) continue
     return releases[i]
   }
-}
-
-const RELEASE = getMostRecentVersion()
+})()
 const VERSION = RELEASE.version
 const DATE = RELEASE.date
 

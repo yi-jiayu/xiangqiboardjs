@@ -223,16 +223,16 @@ CHESSBOARD_EXAMPLES["2030"] = {
   description: "<a href=\"docs.html#config:pieceTheme\"><code class=\"js plain\">pieceTheme</code></a> can be a function.",
   html: "<div id=\"myBoard\" style=\"width: 450px\"></div>",
   name: "Piece Theme Function",
-  jsStr: "function pieceTheme (piece) {\n  // graphic theme for red pieces\n  if (piece.search(/r/) !== -1) {\n    return 'img/xiangqipieces/graphic/' + piece + '.png';\n  }\n\n  // traditional theme for black pieces\n  return 'img/xiangqipieces/traditional/' + piece + '.png';\n}\n\nconst config = {\n  pieceTheme: pieceTheme,\n  position: 'start'\n};\nconst board = Xiangqiboard('myBoard', config);",
+  jsStr: "function pieceTheme (piece) {\n  // graphic theme for red pieces\n  if (piece.search(/r/) !== -1) {\n    return 'img/xiangqipieces/graphic/' + piece + '.svg';\n  }\n\n  // traditional theme for black pieces\n  return 'img/xiangqipieces/traditional/' + piece + '.svg';\n}\n\nconst config = {\n  pieceTheme: pieceTheme,\n  position: 'start'\n};\nconst board = Xiangqiboard('myBoard', config);",
   jsFn: function () {
 function pieceTheme (piece) {
   // graphic theme for red pieces
   if (piece.search(/r/) !== -1) {
-    return 'img/xiangqipieces/graphic/' + piece + '.png';
+    return 'img/xiangqipieces/graphic/' + piece + '.svg';
   }
 
   // traditional theme for black pieces
-  return 'img/xiangqipieces/traditional/' + piece + '.png';
+  return 'img/xiangqipieces/traditional/' + piece + '.svg';
 }
 
 const config = {
