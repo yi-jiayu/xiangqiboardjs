@@ -36,26 +36,25 @@
   const DEFAULT_SNAP_SPEED = 30
   const DEFAULT_TRASH_SPEED = 100
 
-  // use unique class names to prevent clashing with anything else on the page
-  // and simplify selectors
+  // use unique class names to prevent clashing with anything else on the page and simplify selectors
   // NOTE: these should never change
   const CSS = Object.freeze({
-    clearfix: 'clearfix-7da63',
-    board: 'board-b72b1',
-    square: 'square-55d63',
-    red: 'red-1e1d7',
-    black: 'black-3c85d',
-    highlight1: 'highlight1-32417',
-    highlight2: 'highlight2-9c5d2',
-    notation: 'notation-322f9',
-    alpha: 'alpha-d2270',
-    numeric: 'numeric-fc462',
-    row: 'row-5277c',
-    piece: 'piece-417db',
-    sparePieces: 'spare-pieces-7492f',
-    xiangqiboard: 'xiangqiboard-63f37',
-    sparePiecesTop: 'spare-pieces-top-4028b',
-    sparePiecesBottom: 'spare-pieces-bottom-ae20f'
+    clearfix: 'clearfix-5f3b5',
+    board: 'board-1ef78',
+    square: 'square-2b8ce',
+    red: 'red-d1a03',
+    black: 'black-28092',
+    highlight1: 'highlight1-e13fc',
+    highlight2: 'highlight2-e0a03',
+    notation: 'notation-8c7a2',
+    alpha: 'alpha-f4ef2',
+    numeric: 'numeric-fe76e',
+    row: 'row-cb702',
+    piece: 'piece-1e8b9',
+    sparePieces: 'spare-pieces-9e77b',
+    xiangqiboard: 'xiangqiboard-8ddcb',
+    sparePiecesTop: 'spare-pieces-top-e4b47',
+    sparePiecesBottom: 'spare-pieces-bottom-29dac'
   })
 
   // ---------------------------------------------------------------------------
