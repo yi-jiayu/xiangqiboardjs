@@ -529,18 +529,12 @@
   // HTML
   // ---------------------------------------------------------------------------
 
-  function buildContainerHTML (hasSparePieces) {
+  function buildContainerHTML () {
     let html = '<div class="{xiangqiboard}">'
 
-    if (hasSparePieces) {
-      html += '<div class="{sparePieces} {sparePiecesTop}"></div>'
-    }
-
+    html += '<div class="{sparePieces} {sparePiecesTop}"></div>'
     html += '<div class="{board}"></div>'
-
-    if (hasSparePieces) {
-      html += '<div class="{sparePieces} {sparePiecesBottom}"></div>'
-    }
+    html += '<div class="{sparePieces} {sparePiecesBottom}"></div>'
 
     html += '</div>'
 
@@ -574,17 +568,8 @@
     // default for showNotation is false
     if (config.showNotation !== true) config.showNotation = false
 
-    // default for draggable is false
-    if (config.draggable !== true) config.draggable = false
-
     // default for dropOffBoard is 'snapback'
     if (config.dropOffBoard !== 'trash') config.dropOffBoard = 'snapback'
-
-    // default for sparePieces is false
-    if (config.sparePieces !== true) config.sparePieces = false
-
-    // draggable must be true if sparePieces is enabled
-    if (config.sparePieces) config.draggable = true
 
     // default piece theme is wikimedia
     if (!config.hasOwnProperty('pieceTheme') ||
@@ -1542,13 +1527,11 @@
       })
 
       // spare pieces
-      if (config.sparePieces) {
-        $container
-          .find('.' + CSS.sparePieces)
-          .css('paddingLeft', squareSize + boardBorderSize + 'px')
-          // make the spare pieces section always visible
-          .css('height', squareSize + 'px')
-      }
+      $container
+        .find('.' + CSS.sparePieces)
+        .css('paddingLeft', squareSize + boardBorderSize + 'px')
+        // make the spare pieces section always visible
+        .css('height', squareSize + 'px')
 
       // redraw the board
       drawBoard()
@@ -1573,9 +1556,6 @@
     }
 
     function mousedownSquare (evt) {
-       // do nothing if we're not draggable
-      if (!config.draggable) return
-
       // do nothing if there is no piece on this square
       const square = $(this).attr('data-square')
       if (!validSquare(square)) return
@@ -1585,9 +1565,6 @@
     }
 
     function touchstartSquare (e) {
-      // do nothing if we're not draggable
-      if (!config.draggable) return
-
       // do nothing if there is no piece on this square
       const square = $(this).attr('data-square')
       if (!validSquare(square)) return
@@ -1603,18 +1580,12 @@
     }
 
     function mousedownSparePiece (evt) {
-      // do nothing if sparePieces is not enabled
-      if (!config.sparePieces) return
-
       const piece = $(this).attr('data-piece')
 
       beginDraggingPiece('spare', piece, evt.pageX, evt.pageY, $(this).attr('id'))
     }
 
     function touchstartSparePiece (e) {
-      // do nothing if sparePieces is not enabled
-      if (!config.sparePieces) return
-
       const piece = $(this).attr('data-piece')
 
       e = e.originalEvent
@@ -1754,13 +1725,11 @@
       createElIds()
 
       // build board and save it in memory
-      $container.html(buildContainerHTML(config.sparePieces))
+      $container.html(buildContainerHTML())
       $board = $container.find('.' + CSS.board)
 
-      if (config.sparePieces) {
-        $sparePiecesTop = $container.find('.' + CSS.sparePiecesTop)
-        $sparePiecesBottom = $container.find('.' + CSS.sparePiecesBottom)
-      }
+      $sparePiecesTop = $container.find('.' + CSS.sparePiecesTop)
+      $sparePiecesBottom = $container.find('.' + CSS.sparePiecesBottom)
 
       // create the drag piece
       const draggedPieceId = uuid()
