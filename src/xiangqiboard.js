@@ -700,8 +700,8 @@
     let draggedPiece = null
     let draggedPieceLocation = null
     let draggedPieceSource = null
+    let draggedPieceId = null
     let isDragging = false
-    const sparePiecesElsIds = {}
     const squareElsIds = {}
     let squareElsOffsets = {}
     let squareSize = 16
@@ -805,15 +805,6 @@
           const square = COLUMNS[i] + j
           squareElsIds[square] = square + '-' + uuid()
         }
-      }
-
-      // spare pieces
-      const pieces = 'KABNRCP'.split('')
-      for (let i = 0; i < pieces.length; i++) {
-        const whitePiece = 'r' + pieces[i]
-        const blackPiece = 'b' + pieces[i]
-        sparePiecesElsIds[whitePiece] = whitePiece + '-' + uuid()
-        sparePiecesElsIds[blackPiece] = blackPiece + '-' + uuid()
       }
     }
 
@@ -922,20 +913,6 @@
       return interpolateTemplate(html, CSS)
     }
 
-    function buildSparePiecesHTML (color) {
-      let pieces = ['rK', 'rA', 'rB', 'rN', 'rR', 'rC', 'rP']
-      if (color === 'black') {
-        pieces = ['bK', 'bA', 'bB', 'bN', 'bR', 'bC', 'bP']
-      }
-
-      let html = ''
-      for (let i = 0; i < pieces.length; i++) {
-        html += buildPieceHTML(pieces[i], false, sparePiecesElsIds[pieces[i]])
-      }
-
-      return html
-    }
-
     // -------------------------------------------------------------------------
     // Animations
     // -------------------------------------------------------------------------
@@ -983,45 +960,6 @@
       $animatedPiece.animate(destSquarePosition, opts)
     }
 
-    function animateSparePieceToSquare (piece, dest, completeFn) {
-      const srcOffset = $('#' + sparePiecesElsIds[piece]).offset()
-      const $destSquare = $('#' + squareElsIds[dest])
-      const destOffset = $destSquare.offset()
-
-      // create the animate piece
-      const pieceId = uuid()
-      $('body').append(buildPieceHTML(piece, true, pieceId))
-      const $animatedPiece = $('#' + pieceId)
-      $animatedPiece.css({
-        display: '',
-        position: 'absolute',
-        left: srcOffset.left,
-        top: srcOffset.top
-      })
-
-      // on complete
-      function onFinishAnimation2 () {
-        // add the "real" piece to the destination square
-        $destSquare.find('.' + CSS.piece).remove()
-        $destSquare.append(buildPieceHTML(piece))
-
-        // remove the animated piece
-        $animatedPiece.remove()
-
-        // run complete function
-        if (isFunction(completeFn)) {
-          completeFn()
-        }
-      }
-
-      // animate the piece to the destination square
-      const opts = {
-        duration: config.moveSpeed,
-        complete: onFinishAnimation2
-      }
-      $animatedPiece.animate(destOffset, opts)
-    }
-
     // execute an array of animations
     function doAnimations (animations, oldPos, newPos) {
       if (animations.length === 0) return
@@ -1050,17 +988,13 @@
             .fadeOut(config.trashSpeed, onFinishAnimation3)
 
         // add a piece with no spare pieces - fade the piece onto the square
-        } else if (animation.type === 'add' && !config.sparePieces) {
+        } else if (animation.type === 'add') {
           $('#' + squareElsIds[animation.square])
             .append(buildPieceHTML(animation.piece, true))
             .find('.' + CSS.piece)
             .fadeIn(config.appearSpeed, onFinishAnimation3)
 
         // add a piece with spare pieces - animate from the spares
-        } else if (animation.type === 'add' && config.sparePieces) {
-          animateSparePieceToSquare(animation.piece, animation.square, onFinishAnimation3)
-
-        // move a piece from squareA to squareB
         } else if (animation.type === 'move') {
           animateSquareToSquare(animation.source, animation.destination, animation.piece, onFinishAnimation3)
         }
@@ -1159,15 +1093,14 @@
       $board.html(buildBoardHTML(currentOrientation, squareSize, config.showNotation))
       $board.css(buildBoardCSS(currentOrientation))
       drawPositionInstant()
+    }
 
-      if (config.sparePieces) {
-        if (currentOrientation === 'black') {
-          $sparePiecesTop.html(buildSparePiecesHTML('red'))
-          $sparePiecesBottom.html(buildSparePiecesHTML('black'))
-        } else {
-          $sparePiecesTop.html(buildSparePiecesHTML('black'))
-          $sparePiecesBottom.html(buildSparePiecesHTML('red'))
-        }
+    function addSparePiece (color, piece) {
+      const html = buildPieceHTML(color[0] + piece, false, uuid())
+      if (color === currentOrientation) { // piece should be added to the bottom
+        $sparePiecesBottom.append(html)
+      } else {
+        $sparePiecesTop.append(html)
       }
     }
 
@@ -1223,9 +1156,10 @@
     }
 
     function snapbackDraggedPiece () {
-      // there is no "snapback" for spare pieces
+      // trash the dragged piece and make the piece visible in the dropped pieces again
       if (draggedPieceSource === 'spare') {
         trashDraggedPiece()
+        $('#' + draggedPieceId).css('visibility', 'visible')
         return
       }
 
@@ -1282,6 +1216,9 @@
     function dropDraggedPieceOnSquare (square) {
       removeSquareHighlights()
 
+      // if the piece came from dropped piece, remove it from there
+      $('#' + draggedPieceId).remove()
+
       // update position
       const newPosition = deepCopy(currentPosition)
       delete newPosition[draggedPieceSource]
@@ -1313,7 +1250,7 @@
       isDragging = false
     }
 
-    function beginDraggingPiece (source, piece, x, y) {
+    function beginDraggingPiece (source, piece, x, y, sparePieceId) {
       // run their custom onDragStart function
       // their custom onDragStart function can cancel drag start
       if (isFunction(config.onDragStart) &&
@@ -1329,6 +1266,7 @@
       // if the piece came from spare pieces, location is offboard
       if (source === 'spare') {
         draggedPieceLocation = 'offboard'
+        draggedPieceId = sparePieceId
       } else {
         draggedPieceLocation = source
       }
@@ -1350,6 +1288,10 @@
           .addClass(CSS.highlight1)
           .find('.' + CSS.piece)
           .css('display', 'none')
+      } else {
+        // hide the spare piece
+        $('#' + sparePieceId)
+          .css('visibility', 'hidden')
       }
     }
 
@@ -1604,6 +1546,8 @@
         $container
           .find('.' + CSS.sparePieces)
           .css('paddingLeft', squareSize + boardBorderSize + 'px')
+          // make the spare pieces section always visible
+          .css('height', squareSize + 'px')
       }
 
       // redraw the board
@@ -1613,6 +1557,11 @@
     // set the starting position
     widget.start = function (useAnimation) {
       widget.position('start', useAnimation)
+    }
+
+    // add a dropped piece
+    widget.drop = function (color, piece) {
+      addSparePiece(color, piece)
     }
 
     // -------------------------------------------------------------------------
@@ -1659,7 +1608,7 @@
 
       const piece = $(this).attr('data-piece')
 
-      beginDraggingPiece('spare', piece, evt.pageX, evt.pageY)
+      beginDraggingPiece('spare', piece, evt.pageX, evt.pageY, $(this).attr('id'))
     }
 
     function touchstartSparePiece (e) {
