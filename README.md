@@ -1,3 +1,7 @@
+Modified to support shogi-style dropped pieces:
+
+![dropped-pieces](https://user-images.githubusercontent.com/11734309/50571098-bbb96880-0ddb-11e9-903e-5616ad8e6b7a.gif)
+
 # xiangqiboard.js
 
 xiangqiboard.js is a JavaScript xiangqiboard component. It depends on [jQuery].
