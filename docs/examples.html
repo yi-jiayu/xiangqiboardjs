@@ -209,13 +209,15 @@ CHESSBOARD_EXAMPLES["2006"] = {
   jsFn: function () {
 const board = Xiangqiboard('myBoard', {
   draggable: true,
-  dropOffBoard: 'trash',
+  dropOffBoard: 'snapback',
   sparePieces: true,
   showNotation: true
 });
 
 $('#startBtn').on('click', board.start);
 $('#clearBtn').on('click', board.clear);
+
+      window.board = board
   }
 };
 
